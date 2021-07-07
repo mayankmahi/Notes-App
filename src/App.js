@@ -6,6 +6,7 @@ import Sidebar from "./components/Sidebar";
 
 function App() {
   const [notes, setNotes] = useState([]);
+  const [activeNote, setActiveNote] = useState(false);
 
   const onAddNote = () => {
     const newNote = {
@@ -16,12 +17,27 @@ function App() {
     };
 
     setNotes([newNote, ...notes]);
-   console.log('add')
+    setActiveNote(newNote.id);
   };
+
+  const onDeleteNote = (idToDelete) => {
+    setNotes(notes.filter((note) => note.id !== idToDelete));
+  };
+
+  const getActiveNote = () => {
+    return notes.find(( note ) => note.id === activeNote);
+  };
+
   return (
     <div className="App">
-      <Sidebar notes={notes} onAddNote={onAddNote} />
-      <Main />
+      <Sidebar
+        notes={notes}
+        onAddNote={onAddNote}
+        onDeleteNote={onDeleteNote}
+        activeNote={activeNote}
+        setActiveNote={setActiveNote}
+      />
+      <Main activeNote={getActiveNote()} />
     </div>
   );
 }
